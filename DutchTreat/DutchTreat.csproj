@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <None Include="wwwroot\img\VanGogh.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Include="wwwroot\index.html" />
   </ItemGroup>
