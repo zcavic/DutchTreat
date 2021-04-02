@@ -3,8 +3,8 @@ var s = "";
 
 console.log("Hello Pluralsight");
 
-//var theForm = $("#theForm");
-//theForm.hide();
+var theForm = $("#theForm");
+theForm.hide();
 
 var button = $("#buyButton");
 button.on("click", function () {
