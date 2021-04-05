@@ -40,7 +40,7 @@ namespace DutchTreat
 			app.UseEndpoints(cfg =>
 			{
 				cfg.MapRazorPages();
-				cfg.MapRoute("Default",
+				cfg.MapControllerRoute("Default",
 				"/{controller}/{action}/{id?}",
 				new { controller = "App",action = "Index" });
 			});
