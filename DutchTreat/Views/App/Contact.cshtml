@@ -2,7 +2,7 @@
 @{
 	ViewBag.Title = "Contact Us";
 }
-@section Script{
+@section Scripts {
 	<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
 	<script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js"></script>
 }
@@ -29,4 +29,5 @@
 	<span asp-validation-for="Message"></span>
 	<br />
 	<input type="submit" value="Send Message" />
+	<div>@ViewBag.UserMessage</div>
 </form>
