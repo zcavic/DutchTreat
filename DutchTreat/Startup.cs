@@ -24,6 +24,7 @@ namespace DutchTreat
 				cnf.UseSqlServer();
 			});
 
+			services.AddTransient<DutchSeeder>();
 			services.AddTransient<IMailService, NullMailService>();
 
 			services.AddControllersWithViews()
