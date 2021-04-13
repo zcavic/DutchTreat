@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,8 @@ namespace DutchTreat
 			services.AddScoped<IDutchRepository, DutchRepository>();
 
 			services.AddControllersWithViews()
-				.AddRazorRuntimeCompilation();
+				.AddRazorRuntimeCompilation()
+				.AddNewtonsoftJson(cfg => cfg.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
 			services.AddRazorPages();
 		}
