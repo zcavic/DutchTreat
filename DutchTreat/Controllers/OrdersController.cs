@@ -1,9 +1,11 @@
-﻿using DutchTreat.Data;
+﻿using AutoMapper;
+using DutchTreat.Data;
 using DutchTreat.Data.Entities;
 using DutchTreat.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 
 namespace DutchTreat.Controllers
 {
@@ -12,11 +14,13 @@ namespace DutchTreat.Controllers
 	{
 		private readonly IDutchRepository repository;
 		private readonly ILogger<OrdersController> logger;
+		private readonly IMapper mapper;
 
-		public OrdersController(IDutchRepository repository, ILogger<OrdersController> logger)
+		public OrdersController(IDutchRepository repository, ILogger<OrdersController> logger, IMapper mapper)
 		{
 			this.repository = repository;
 			this.logger = logger;
+			this.mapper = mapper;
 		}
 
 		[HttpGet]
@@ -24,8 +28,8 @@ namespace DutchTreat.Controllers
 		{
 			try
 			{
-				return Ok(repository.GetAllOrders());
-
+				var results = repository.GetAllOrders();
+				return Ok(mapper.Map<IEnumerable<OrderViewModel>>(results));
 			}
 			catch (Exception ex)
 			{
@@ -42,14 +46,14 @@ namespace DutchTreat.Controllers
 			{
 				var order = repository.GetOrderById(id);
 				if (order != null)
-					return Ok(order);
+					return Ok(mapper.Map<Order, OrderViewModel>(order));
 				else
 					return NotFound();
 			}
 			catch (Exception ex)
 			{
 				logger.LogError($"Failed to get orders: {ex}");
-				return BadRequest("ailed to get orders");
+				return BadRequest("Failed to get orders");
 			}
 		}
 
@@ -60,25 +64,15 @@ namespace DutchTreat.Controllers
 			{
 				if (ModelState.IsValid)
 				{
-					var newOrder = new Order()
-					{
-						OrderDate = model.OrderDate,
-						OrderNumber = model.OrderNumber,
-						Id = model.OrderId
-					};
+					var newOrder = mapper.Map<OrderViewModel, Order>(model);
+
 					if (newOrder.OrderDate == DateTime.MinValue)
 						newOrder.OrderDate = DateTime.Now;
 
 					repository.AddEntity(newOrder);
 					if (repository.SaveAll())
 					{
-						var vm = new OrderViewModel()
-						{
-							OrderId = newOrder.Id,
-							OrderDate = newOrder.OrderDate,
-							OrderNumber = newOrder.OrderNumber
-						};
-						return Created($"/app/orders/{vm.OrderId}", vm);
+						return Created($"/app/orders/{newOrder.Id}", mapper.Map<Order, OrderViewModel>(newOrder));
 					}
 				}
 				else
