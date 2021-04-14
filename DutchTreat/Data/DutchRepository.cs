@@ -17,6 +17,11 @@ namespace DutchTreat.Data
 			this.ctx = ctx;
 		}
 
+		public void AddEntity(object model)
+		{
+			ctx.Add(model);
+		}
+
 		public IEnumerable<Order> GetAllOrders()
 		{
 			return ctx.Orders.Include(o => o.Items)

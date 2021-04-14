@@ -1,4 +1,5 @@
 ﻿using DutchTreat.Data;
+using DutchTreat.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -49,6 +50,22 @@ namespace DutchTreat.Controllers
 				logger.LogError($"Failed to get orders: {ex}");
 				return BadRequest("ailed to get orders");
 			}
+		}
+
+		[HttpPost]
+		public IActionResult Post([FromBody]Order model)
+		{
+			try
+			{
+				repository.AddEntity(model);
+				if(repository.SaveAll())
+					return Created($"/app/orders/{model.Id}", model);
+			}
+			catch (Exception ex)
+			{
+				logger.LogError($"Failed add orders: {ex}");
+			}
+			return BadRequest("Failed add orders");
 		}
 	}
 }
