@@ -1,11 +1,12 @@
 ﻿using DutchTreat.Data.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 
 namespace DutchTreat.Data
 {
-	public class DutchContext : DbContext
+	public class DutchContext : IdentityDbContext<StoreUser>
 	{
 		private readonly IConfiguration _config;
 

@@ -1,5 +1,6 @@
 ﻿using DutchTreat.Data.Entities;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,16 +15,35 @@ namespace DutchTreat.Data
 	{
 		private readonly DutchContext ctx;
 		private readonly IWebHostEnvironment env;
+		private readonly UserManager<StoreUser> userManager;
 
-		public DutchSeeder(DutchContext ctx, IWebHostEnvironment env)
+		public DutchSeeder(DutchContext ctx, IWebHostEnvironment env, UserManager<StoreUser> userManager)
 		{
 			this.ctx = ctx;
 			this.env = env;
+			this.userManager = userManager;
 		}
 
-		public void Seed()
+		public async Task SeedAsync()
 		{
 			ctx.Database.EnsureCreated();
+
+			StoreUser user = await userManager.FindByEmailAsync("zeljkochavic@gmail.com");
+
+			if (user == null)
+			{
+				user = new StoreUser()
+				{
+					FistName = "Zeljko",
+					LastName = "Cavic",
+					Email = "zeljkochavic@gmail.com",
+					UserName = "zeljkochavic@gmail.com"
+				};
+				var results = await userManager.CreateAsync(user, "P@ss0rd!");
+				if (results != IdentityResult.Success)
+					throw new InvalidOperationException("Could not create new user in seeder");
+
+			}
 
 			if (ctx.Products.Any())
 				return;
@@ -31,14 +51,14 @@ namespace DutchTreat.Data
 			var filePath = Path.Combine(env.ContentRootPath, "Data/art.json");
 			var json = File.ReadAllText(filePath);
 			var products = JsonSerializer.Deserialize<IEnumerable<Product>>(json);
-
 			ctx.Products.AddRange(products);
 
-			var order = new Order()
+			var order = ctx.Orders.Where(o => o.Id == 1).FirstOrDefault();
+
+			if(order != null)
 			{
-				OrderDate = DateTime.Today,
-				OrderNumber = "1000",
-				Items = new List<OrderItem>()
+				order.User = user;
+				order.Items = new List<OrderItem>()
 				{
 					new OrderItem()
 					{
@@ -46,10 +66,8 @@ namespace DutchTreat.Data
 						Quantity = 5,
 						UnitPrice = products.First().Price
 					}
-				}
+				};
 			};
-
-			ctx.Add(order);
 
 			ctx.SaveChanges();
 		}
