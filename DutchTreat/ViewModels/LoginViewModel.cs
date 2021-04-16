@@ -19,7 +19,7 @@ namespace DutchTreat.ViewModels
         {
             get; set;
         }
-        public string RememberMe
+        public bool RememberMe
         {
             get; set;
         }
