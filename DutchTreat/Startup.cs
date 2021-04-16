@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace DutchTreat
@@ -28,6 +29,8 @@ namespace DutchTreat
 			services.AddTransient<DutchSeeder>();
 			services.AddTransient<IMailService, NullMailService>();
 			services.AddScoped<IDutchRepository, DutchRepository>();
+
+			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 			services.AddControllersWithViews()
 				.AddRazorRuntimeCompilation()
