@@ -7,5 +7,10 @@
 			"Default": "Information",
 			"Microsoft": "Warning"
 		}
+	},
+	"Token": {
+		"Key": ";sdadsa;dsadadfdsfdsfsdcsdcsd",
+		"Issuer": "http://locelhost:8888",
+		"Audience": "http://locelhost:8888"
 	}
 }
