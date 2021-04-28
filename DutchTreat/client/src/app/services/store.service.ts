@@ -2,6 +2,7 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
+import { LoginRequest, LoginResulta } from "../shared/LoginResults";
 import { Order, OrderItem } from "../shared/Order";
 import { Product } from "../shared/Product"
 
@@ -26,7 +27,15 @@ export class Store {
 	}
 
 	get loginRequired(): boolean {
-		return this.token.length === 0 || this.expiration < new Date();
+		return this.token.length === 0 || this.expiration > new Date();
+	}
+
+	login(creds: LoginRequest) {
+		return this.http.post<LoginResulta>("/account/createtoken", creds)
+			.pipe(map(data => {
+				this.token = data.token;
+				this.expiration = data.expiration;
+			}));
 	}
 
 	checkout() {
