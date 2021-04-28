@@ -10,6 +10,7 @@ import { CheckoutPage } from './pages/checkout.component';
 import router from './router/idex';
 import { LoginPage } from './pages/loginPage.component';
 import { AuthActivator } from './services/authActivator.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { AuthActivator } from './services/authActivator.service';
   imports: [
       BrowserModule, 
       HttpClientModule,
-      router
+      router, 
+      FormsModule
   ],
     providers: [
         Store, 
