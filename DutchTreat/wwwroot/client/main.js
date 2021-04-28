@@ -480,7 +480,7 @@ class CheckoutPage {
             .subscribe(() => {
             this.router.navigate(["/"]);
         }, err => {
-            this.errorMessage = `Failed to checkout: ${err}`;
+            this.errorMessage = "Failed to checkout: ${err}";
         });
     }
 }
@@ -595,6 +595,7 @@ class OrderItem {
 class Order {
     constructor() {
         this.orderDate = new Date();
+        this.orderNumber = Math.random().toString(36).substr(2, 5);
         this.items = [];
     }
     get subtotal() {

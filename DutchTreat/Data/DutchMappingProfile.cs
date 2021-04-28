@@ -9,16 +9,17 @@ using System.Threading.Tasks;
 
 namespace DutchTreat.Data
 {
-    public class DutchMappingProfile : Profile
-    {
+	public class DutchMappingProfile : Profile
+	{
 		public DutchMappingProfile()
 		{
 			CreateMap<Order, OrderViewModel>()
-				.ForMember(o=> o.OrderId, ex => ex.MapFrom(o=>o.Id))
+				.ForMember(o => o.OrderId, ex => ex.MapFrom(o => o.Id))
 				.ReverseMap();
 
 			CreateMap<OrderItem, OrderItemViewModel>()
-				.ReverseMap();
+				.ReverseMap()
+				.ForMember(m => m.Product, opt => opt.Ignore());
 		}
-    }
+	}
 }

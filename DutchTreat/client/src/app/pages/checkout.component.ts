@@ -20,7 +20,7 @@ export class CheckoutPage {
       .subscribe(() => {
         this.router.navigate(["/"]);
       }, err => {
-          this.errorMessage = `Failed to checkout: ${err}`;
+          this.errorMessage = "Failed to checkout: ${err}";
       })
   }
 }
